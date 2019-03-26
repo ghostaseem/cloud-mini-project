@@ -2,8 +2,8 @@ Rest Application
 =================
 
 This is Flask and Cassandra RESTful application.
-It has feature like:
-1.  Hash based user authentication.
+It has a feature like:
+1.  Hash-based user authentication.
 2.  Dynamically generated REST API.
 3.  API for Weather (api.apixu.com) and Location by IP (api.ipgeolocation.io) has been used.
 
@@ -29,13 +29,11 @@ To run the server use the following command:
 
     (venv) $ python app.py
      * Running on http://0.0.0.0:8080/
-     * Restarting with reloader
-
-Then from a different terminal window you can send requests.
 
 Things that need to be changed
 -------------------------------
-External API need from mention website need to replaced in config.py file inside instance
+Get a new API from mentioned website.
+Then replaced in config.py file inside the instance.
 
     .
     ├── app.py
@@ -118,4 +116,6 @@ If you are deploying using kubernetes here is the code:
     -f values.yaml \
     stable/ghost
 
-
+Licence
+--------
+This project is open-sourced under the [MIT license](LICENSE)
