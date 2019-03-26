@@ -1,0 +1,4 @@
+Flask
+requests
+cassandra-driver
+flask_sqlalchemy

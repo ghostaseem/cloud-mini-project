@@ -1,0 +1,29 @@
+<!doctype html5>
+<html>
+<head>
+  <title>{{ username.title() }} - Home</title>
+</head>
+<body>
+  <h2>Hello {{username.title()}}</h2>
+
+  <h1>View Weather of place to visit</h1>
+<form action = "/result" method="POST">
+    <input name="text">
+    <input type="submit">
+</form>
+
+<h1>Current Location/Current IP for Loadbalancing</h1>
+
+<p> {{ final }}</p>
+<h1>Trending Now...</h1>
+<form action = "/mylist" method="POST">
+    <input type="submit">
+</form>
+
+<h1>All weather now...</h1>
+<form action = "/myrecord" method="POST">
+    <input type="submit">
+
+  <p><a href="{{ url_for('logout', username=username) }}">Logout</a></p>
+</body>
+</html>
