@@ -33,6 +33,17 @@ To run the server use the following command:
 
 Then from a different terminal window you can send requests.
 
+Things that need to be changed
+-------------------------------
+External API need from mention website need to replaced in config.py file inside instance
+
+    .
+    ├── app.py
+    ├── config.py              # Do not change anything here
+    ├── instance               # Go inside this folder 
+    │   ├── config.py          # Change API key here
+      └── ...
+
 Further Implementation
 -----------------------
 You can you HTTPS if you are deploying it on specific domain.
@@ -108,6 +119,3 @@ If you are deploying using kubernetes here is the code:
     stable/ghost
 
 
-
-Project Documentation
------------------------
