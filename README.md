@@ -46,7 +46,7 @@ Further Implementation
 -----------------------
 You can you HTTPS if you are deploying it on specific domain.
 You cannot use HTTPS in bare IP.
-
+ingressa and LetsEncrypt has been used.
 If you are deploying using kubernetes here is the code:
 
     $ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get > get_helm.sh
@@ -87,6 +87,8 @@ If you are deploying using kubernetes here is the code:
     name: letsencrypt-prod
     http01: {}
     EOF
+    
+Write your domain name
 
     cat > values.yaml <<EOF
     serviceType: ClusterIP
