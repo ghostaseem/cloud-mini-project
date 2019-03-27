@@ -53,9 +53,7 @@ If you are deploying using kubernetes here is the code:
     $ chmod 700 get_helm.sh
     $ ./get_helm.sh
 
-
     helm init
-
 
     kubectl create serviceaccount tiller --namespace kube-system
 
@@ -63,11 +61,10 @@ If you are deploying using kubernetes here is the code:
     --clusterrole=cluster-admin \
     --serviceaccount=kube-system:tiller
 
-
     helm init --service-account=tiller
 
     kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' 
- 
+
     helm install --name cert-manager \
     --namespace ingress \
     --set ingressShim.defaultIssuerName=letsencrypt-prod \
@@ -75,9 +72,7 @@ If you are deploying using kubernetes here is the code:
     stable/cert-manager \
     --version v0.5.2
 
-
     kubectl get crd
-
 
     cat << EOF| kubectl create -n ingress -f -
     apiVersion: certmanager.k8s.io/v1alpha1
@@ -92,8 +87,6 @@ If you are deploying using kubernetes here is the code:
     name: letsencrypt-prod
     http01: {}
     EOF
-
-
 
     cat > values.yaml <<EOF
     serviceType: ClusterIP
@@ -115,7 +108,7 @@ If you are deploying using kubernetes here is the code:
     helm install --name test-app \
     -f values.yaml \
     stable/ghost
-
+    
 Licence
 --------
 This project is open-sourced under the [MIT license](LICENSE)
