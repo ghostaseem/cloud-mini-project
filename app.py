@@ -1,10 +1,11 @@
+#Import Library
 from flask import Flask, render_template, request, jsonify, json, url_for, abort, redirect, session,flash
 import requests
 from cassandra.cluster import Cluster
 from cassandra.cqlengine import connection
 from flask_sqlalchemy import sqlalchemy, SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-
+#Config file for API
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
@@ -18,7 +19,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{db}'.format(db=db_name)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #SECRET_KEY required for session, flash and Flask Sqlalchemy to work
-app.config['SECRET_KEY'] = 'thisiscloudcomputingapp'
+app.config['SECRET_KEY'] = '{Your Secret Key}'
 
 db = SQLAlchemy(app)
 
@@ -131,14 +132,16 @@ def logout(username):
     flash("successfully logged out.")
     return redirect(url_for('login'))
 
-
+#Load my json
 
 with open('myrecord.json') as weather:
     load_records = json.load(weather)
 
-
+#URL
 my_url = 'http://api.apixu.com/v1/current.json?key={API_KEY}&q={location}'
 
+
+#Show result as user request
 @app.route('/result', methods=['POST', 'GET'])
 def my_form_post():
     location = request.form['text']
@@ -147,6 +150,7 @@ def my_form_post():
     a = resp.json()
     return render_template("result.html",result = a)
 
+#Get from database
 
 @app.route("/mylist", methods=['POST', 'GET'])
 def cassandra():
@@ -159,9 +163,10 @@ def cassandra():
     row_list = list(rows)
     return jsonify(row_list)
 
+#Jsonify file
 @app.route('/myrecord', methods=['GET', 'POST'])
 def see_records():
     return jsonify(load_records)
-
+#Run program
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
