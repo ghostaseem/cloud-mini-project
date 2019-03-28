@@ -10,12 +10,14 @@ app.config.from_object('config')
 app.config.from_pyfile('config.py')
 API_WEATHER=app.config['API_WEATHER']
 API_LOCATION = app.config['API_LOCATION']
+# My database name
 db_name = "auth.db"
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{db}'.format(db=db_name)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+#SECRET_KEY required for session, flash and Flask Sqlalchemy to work
 app.config['SECRET_KEY'] = 'thisiscloudcomputingapp'
 
 db = SQLAlchemy(app)
@@ -31,11 +33,19 @@ class User(db.Model):
 
 
 def create_db():
+    """ # Execute this first time to create new db in current directory. """
     db.create_all()
 
 
 @app.route("/signup/", methods=["GET", "POST"])
 def signup():
+    """
+    Implements signup functionality. Allows username and password for new user.
+    Hashes password with salt using werkzeug.security.
+    Stores username and hashed password inside database.
+    Username should to be unique else raises sqlalchemy.exc.IntegrityError.
+    """
+
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
@@ -47,6 +57,7 @@ def signup():
             username = username.strip()
             password = password.strip()
 
+        # Returns salted pwd hash in format : method$salt$hashedvalue
         hashed_pwd = generate_password_hash(password, 'sha256')
 
         new_user = User(username=username, pass_hash=hashed_pwd)
@@ -67,6 +78,13 @@ def signup():
 @app.route("/", methods=["GET", "POST"])
 @app.route("/login/", methods=["GET", "POST"])
 def login():
+    """
+    Provides login functionality by rendering login form on get request.
+    On post checks password hash from db for given input username and password.
+    If hash matches redirects authorized user to home page else redirect to
+    login page with error message.
+    """
+
     if request.method == "POST":
         username = request.form['username']
         password = request.form['password']
@@ -98,6 +116,7 @@ def user_home(username):
     last_url = url.format(apiKey=API_LOCATION, ip=request.environ.get('HTTP_X_REAL_IP', request.remote_addr))
     r = requests.get(last_url)
     j = json.loads(r.text)
+    # city = j['city']
     a = j
     if not session.get(username):
         abort(401)
@@ -131,7 +150,7 @@ def my_form_post():
 
 @app.route("/mylist", methods=['POST', 'GET'])
 def cassandra():
-    cluster = Cluster()
+    cluster = Cluster(['cassandra'])
     session = cluster.connect()
     session.set_keyspace("people")
     cql = "SELECT mylist FROM mylist"
@@ -145,4 +164,4 @@ def see_records():
     return jsonify(load_records)
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port="8080", debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
