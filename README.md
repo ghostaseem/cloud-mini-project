@@ -1,5 +1,5 @@
-Rest Application
-=================
+Rest Application (Weather and Tourism)
+========================================
 
 This is Flask and Cassandra RESTful application.
 It has a feature like:
