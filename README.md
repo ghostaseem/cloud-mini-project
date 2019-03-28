@@ -35,10 +35,10 @@ Cassandra Installation Guide (MacOS)
 
 Install cql
 -----------
-To use cqlsh, the Cassandra query language shell, you need to install cql:
+To use cqlsh, the Cassandra query language shell, you need to install cassandra-driver:
 
 ```Shell
-pip install cql
+pip install cassandra-driver
 ```
 
 Install Cassandra
